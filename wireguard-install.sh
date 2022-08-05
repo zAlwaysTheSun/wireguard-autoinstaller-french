@@ -9,23 +9,21 @@ NC='\033[0m'
 
 function isRoot() {
 	if [ "${EUID}" -ne 0 ]; then
-		echo "You need to run this script as root"
+		echo "Ce script a besoin d'être exécuté avec les permissions root user pour fonctionner !"
 		exit 1
 	fi
 }
 
 function checkVirt() {
 	if [ "$(systemd-detect-virt)" == "openvz" ]; then
-		echo "OpenVZ is not supported"
+		echo "La virtualisation OpenVZ n'est pas supportée !"
 		exit 1
 	fi
 
 	if [ "$(systemd-detect-virt)" == "lxc" ]; then
-		echo "LXC is not supported (yet)."
-		echo "WireGuard can technically run in an LXC container,"
-		echo "but the kernel module has to be installed on the host,"
-		echo "the container has to be run with some specific parameters"
-		echo "and only the tools need to be installed in the container."
+		echo "La virtualisation LXC n'est pas supportée (enfin si, mais dans certaines conditions)."
+		echo "WireGuard peut techniquement fonctionner sur LXC mais"
+		echo "le module kernel doit être installé !"
 		exit 1
 	fi
 }
@@ -37,7 +35,7 @@ function checkOS() {
 		OS="${ID}" # debian or ubuntu
 		if [[ ${ID} == "debian" || ${ID} == "raspbian" ]]; then
 			if [[ ${VERSION_ID} -lt 10 ]]; then
-				echo "Your version of Debian (${VERSION_ID}) is not supported. Please use Debian 10 Buster or later"
+				echo "Votre version de Debian (${VERSION_ID}) n'est pas supportée ! Merci d'utiliser Debian 10 au minimum !"
 				exit 1
 			fi
 			OS=debian # overwrite if raspbian
@@ -66,12 +64,13 @@ function initialCheck() {
 }
 
 function installQuestions() {
-	echo "Welcome to the WireGuard installer!"
-	echo "The git repository is available at: https://github.com/angristan/wireguard-install"
+	echo "Bienvenue sur l'installateur de WireGuard !"
+	echo "Le lien Git est disponible à cet URL : https://github.com/zAlwaysTheSun/wireguard-autoinstaller-french"
 	echo ""
-	echo "I need to ask you a few questions before starting the setup."
-	echo "You can leave the default options and just press enter if you are ok with them."
+	echo "Le script original est développé par angristan et traduit par zAlwaysTheSun !"
 	echo ""
+	echo "Passons, j'ai besoin de vous poser une question avant de démarrer l'installation.."
+	echo "Vous pouvez laisser les options par défaut et appuyer simplement sur Entrée si vous êtes d'accord."
 
 	# Detect public IPv4 or IPv6 address and pre-fill for the user
 	SERVER_PUB_IP=$(ip -4 addr | sed -ne 's|^.* inet \([^/]*\)/.* scope global.*$|\1|p' | awk '{print $1}' | head -1)
@@ -79,47 +78,47 @@ function installQuestions() {
 		# Detect public IPv6 address
 		SERVER_PUB_IP=$(ip -6 addr | sed -ne 's|^.* inet6 \([^/]*\)/.* scope global.*$|\1|p' | head -1)
 	fi
-	read -rp "IPv4 or IPv6 public address: " -e -i "${SERVER_PUB_IP}" SERVER_PUB_IP
+	read -rp "IPv4/v6 du VPS : " -e -i "${SERVER_PUB_IP}" SERVER_PUB_IP
 
 	# Detect public interface and pre-fill for the user
 	SERVER_NIC="$(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)"
 	until [[ ${SERVER_PUB_NIC} =~ ^[a-zA-Z0-9_]+$ ]]; do
-		read -rp "Public interface: " -e -i "${SERVER_NIC}" SERVER_PUB_NIC
+		read -rp "Interface publique : " -e -i "${SERVER_NIC}" SERVER_PUB_NIC
 	done
 
 	until [[ ${SERVER_WG_NIC} =~ ^[a-zA-Z0-9_]+$ && ${#SERVER_WG_NIC} -lt 16 ]]; do
-		read -rp "WireGuard interface name: " -e -i wg0 SERVER_WG_NIC
+		read -rp "Nom de l'interface WireGuard : " -e -i wg0 SERVER_WG_NIC
 	done
 
 	until [[ ${SERVER_WG_IPV4} =~ ^([0-9]{1,3}\.){3} ]]; do
-		read -rp "Server's WireGuard IPv4: " -e -i 10.66.66.1 SERVER_WG_IPV4
+		read -rp "IPv4 du réseau local WireGuard: " -e -i 10.66.66.1 SERVER_WG_IPV4
 	done
 
 	until [[ ${SERVER_WG_IPV6} =~ ^([a-f0-9]{1,4}:){3,4}: ]]; do
-		read -rp "Server's WireGuard IPv6: " -e -i fd42:42:42::1 SERVER_WG_IPV6
+		read -rp "IPv6 du réseau local WireGuard: " -e -i fd42:42:42::1 SERVER_WG_IPV6
 	done
 
 	# Generate random number within private ports range
 	RANDOM_PORT=$(shuf -i49152-65535 -n1)
 	until [[ ${SERVER_PORT} =~ ^[0-9]+$ ]] && [ "${SERVER_PORT}" -ge 1 ] && [ "${SERVER_PORT}" -le 65535 ]; do
-		read -rp "Server's WireGuard port [1-65535]: " -e -i "${RANDOM_PORT}" SERVER_PORT
+		read -rp "Port d'écoute du serveur WireGuard [1-65535]: " -e -i "${RANDOM_PORT}" SERVER_PORT
 	done
 
 	# Adguard DNS by default
 	until [[ ${CLIENT_DNS_1} =~ ^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$ ]]; do
-		read -rp "First DNS resolver to use for the clients: " -e -i 94.140.14.14 CLIENT_DNS_1
+		read -rp "Entrez un serveur DNS (optimisation) : " -e -i 94.140.14.14 CLIENT_DNS_1
 	done
 	until [[ ${CLIENT_DNS_2} =~ ^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$ ]]; do
-		read -rp "Second DNS resolver to use for the clients (optional): " -e -i 94.140.15.15 CLIENT_DNS_2
+		read -rp "Entrez un second serveur DNS (option de secours, pas obligatoire): " -e -i 94.140.15.15 CLIENT_DNS_2
 		if [[ ${CLIENT_DNS_2} == "" ]]; then
 			CLIENT_DNS_2="${CLIENT_DNS_1}"
 		fi
 	done
 
 	echo ""
-	echo "Okay, that was all I needed. We are ready to setup your WireGuard server now."
-	echo "You will be able to generate a client at the end of the installation."
-	read -n1 -r -p "Press any key to continue..."
+	echo "ça roule, c'est tout ce dont j'ai besoin."
+	echo "Je vais procéder à l'installation de mon côté, vous pouvez faire autre chose à côté ! (pss, préparez WireGuard sur le second poste/serveur)"
+	read -n1 -r -p "Appuyez sur une touche pour démarrer la procédure..."
 }
 
 function installWireGuard() {
@@ -207,7 +206,7 @@ net.ipv6.conf.all.forwarding = 1" >/etc/sysctl.d/wg.conf
 	systemctl enable "wg-quick@${SERVER_WG_NIC}"
 
 	newClient
-	echo "If you want to add more clients, you simply need to run this script another time!"
+	echo "Si vous souhaitez ajouter plus de clients, il vous suffit de lancer ce script une autre fois !"
 
 	# Check if WireGuard is running
 	systemctl is-active --quiet "wg-quick@${SERVER_WG_NIC}"
@@ -215,9 +214,9 @@ net.ipv6.conf.all.forwarding = 1" >/etc/sysctl.d/wg.conf
 
 	# WireGuard might not work if we updated the kernel. Tell the user to reboot
 	if [[ ${WG_RUNNING} -ne 0 ]]; then
-		echo -e "\n${RED}WARNING: WireGuard does not seem to be running.${NC}"
-		echo -e "${ORANGE}You can check if WireGuard is running with: systemctl status wg-quick@${SERVER_WG_NIC}${NC}"
-		echo -e "${ORANGE}If you get something like \"Cannot find device ${SERVER_WG_NIC}\", please reboot!${NC}"
+		echo -e "\n${RED}AVERTISSEMENT : WireGuard ne semble pas être lancé.${NC}"
+		echo -e "${ORANGE}Vous pouvez vérifier si votre WireGuard est initialisé : systemctl status wg-quick@${SERVER_WG_NIC}${NC}"
+		echo -e "${ORANGE}Si vous avez \"Cannot find device ${SERVER_WG_NIC}\", merci de reboot la machine !${NC}"
 	fi
 }
 
@@ -225,16 +224,16 @@ function newClient() {
 	ENDPOINT="${SERVER_PUB_IP}:${SERVER_PORT}"
 
 	echo ""
-	echo "Tell me a name for the client."
-	echo "The name must consist of alphanumeric character. It may also include an underscore or a dash and can't exceed 15 chars."
+	echo "Donne moi le nom de l'utilisateur"
+	echo "Le nom doit être composé de caractères alphanumériques. Il peut également inclure un trait de soulignement ou un tiret et ne peut pas dépasser 15 caractères."
 
 	until [[ ${CLIENT_NAME} =~ ^[a-zA-Z0-9_-]+$ && ${CLIENT_EXISTS} == '0' && ${#CLIENT_NAME} -lt 16 ]]; do
-		read -rp "Client name: " -e CLIENT_NAME
+		read -rp "Nom du client : " -e CLIENT_NAME
 		CLIENT_EXISTS=$(grep -c -E "^### Client ${CLIENT_NAME}\$" "/etc/wireguard/${SERVER_WG_NIC}.conf")
 
 		if [[ ${CLIENT_EXISTS} == '1' ]]; then
 			echo ""
-			echo "A client with the specified name was already created, please choose another name."
+			echo "Un client avec le nom spécifié a déjà été créé, veuillez choisir un autre nom."
 			echo ""
 		fi
 	done
@@ -248,7 +247,7 @@ function newClient() {
 
 	if [[ ${DOT_EXISTS} == '1' ]]; then
 		echo ""
-		echo "The subnet configured supports only 253 clients."
+		echo "Le sous-réseau configuré ne prend en charge que 253 clients."
 		exit 1
 	fi
 
