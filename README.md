@@ -1,21 +1,9 @@
 # WireGuard installer
+This is a WireGuard automatic installer for French users. The original script being created by angristan, I respect his work and you can find his projects at this link: [Original Link](https://github.com/angristan/wireguard-install)
 
-![Lint](https://github.com/angristan/wireguard-install/workflows/Lint/badge.svg)
-![visitors](https://visitor-badge.glitch.me/badge?page_id=angristan.wireguard-install)
-[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/angristan)
+## Requis
 
-**This project is a bash script that aims to setup a [WireGuard](https://www.wireguard.com/) VPN on a Linux server, as easily as possible!**
-
-WireGuard is a point-to-point VPN that can be used in different ways. Here, we mean a VPN as in: the client will forward all its traffic trough an encrypted tunnel to the server.
-The server will apply NAT to the client's traffic so it will appear as if the client is browsing the web with the server's IP.
-
-The script supports both IPv4 and IPv6. Please check the [issues](https://github.com/angristan/wireguard-install/issues) for ongoing development, bugs and planned features!
-
-WireGuard does not fit your environment? Check out [openvpn-install](https://github.com/angristan/openvpn-install).
-
-## Requirements
-
-Supported distributions:
+Distributions Linux testées et disponibles à l'installation :
 
 - Ubuntu >= 16.04
 - Debian >= 10
@@ -24,25 +12,24 @@ Supported distributions:
 - Arch Linux
 - Oracle Linux
 
-## Usage
+## Utilisation
 
-Download and execute the script. Answer the questions asked by the script and it will take care of the rest.
+Téléchargez et lancez le script. Répondez aux questions posées par le script et il s'occupera du reste.
 
 ```bash
-curl -O https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh
+curl -O https://temporary-under-maintenance.unavailable/wireguard-install.sh
 chmod +x wireguard-install.sh
 ./wireguard-install.sh
 ```
 
-It will install WireGuard (kernel module and tools) on the server, configure it, create a systemd service and a client configuration file.
+Il installera WireGuard (module kernel et tools) sur le serveur, le configurera, créera un service systemd et un fichier de configuration client.
 
-Run the script again to add or remove clients!
+Vous souhaitez ajouter des utilisateurs ? Relancez le script ! ;)
 
-## Providers
+## Fournisseurs réseau/machine virtuelle
 
-I recommend these cheap cloud providers for your VPN server:
+Je recommande ces hébergeurs pour l'hébergement de machines virtuelles accompagnées d'un bon réseau :
 
-- [Vultr](https://goo.gl/Xyd1Sc): Worldwide locations, IPv6 support, starting at \$3.50/month
-- [Hetzner](https://hetzner.cloud/?ref=ywtlvZsjgeDq): Germany and Finland, IPv6, 20 TB of traffic, starting at €3/month
-- [Digital Ocean](https://goo.gl/qXrNLK): Worldwide locations, IPv6 support, starting at \$5/month
-- [PulseHeberg](https://goo.gl/76yqW5): France, unlimited bandwidth, starting at €3/month
+- [Pristis](https://goo.gl/Xyd1Sc): IPv4 uniquement, hébergeur avec un service client et après-vente irréprochable, VPS à seulement \3.99€/m
+- [Hetzner](https://hetzner.cloud/?ref=ywtlvZsjgeDq): Allemagne et Finland, serveurs dédiés à prix très bas !
+- [AdkyNet](https://goo.gl/qXrNLK): VPS accompagné d'un réseau 10Gbps, en France et service client aeez rapide !
