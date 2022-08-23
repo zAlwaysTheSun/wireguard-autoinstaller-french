@@ -14,20 +14,6 @@ function isRoot() {
 	fi
 }
 
-function checkVirt() {
-	if [ "$(systemd-detect-virt)" == "openvz" ]; then
-		echo "La virtualisation OpenVZ n'est pas supportée !"
-		exit 1
-	fi
-
-	if [ "$(systemd-detect-virt)" == "lxc" ]; then
-		echo "La virtualisation LXC n'est pas supportée (enfin si, mais dans certaines conditions)."
-		echo "WireGuard peut techniquement fonctionner sur LXC mais"
-		echo "le module kernel doit être installé !"
-		exit 1
-	fi
-}
-
 function checkOS() {
 	# Check OS version
 	if [[ -e /etc/debian_version ]]; then
