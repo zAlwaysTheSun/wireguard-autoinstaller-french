@@ -32,4 +32,4 @@ Je recommande ces hébergeurs pour l'hébergement de machines virtuelles accompa
 
 - [Pristis](https://goo.gl/Xyd1Sc): IPv4 uniquement, hébergeur avec un service client et après-vente irréprochable, VPS à seulement \3.99€/m
 - [Hetzner](https://hetzner.cloud/?ref=ywtlvZsjgeDq): Allemagne et Finland, serveurs dédiés à prix très bas !
-- [AdkyNet](https://goo.gl/qXrNLK): VPS accompagné d'un réseau 10Gbps, en France et service client aeez rapide !
+- [AdkyNet](https://goo.gl/qXrNLK): VPS accompagné d'un réseau 10Gbps, en France et service client assez rapide !
