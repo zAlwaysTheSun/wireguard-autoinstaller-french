@@ -17,7 +17,7 @@ Distributions Linux testées et disponibles à l'installation :
 Téléchargez et lancez le script. Répondez aux questions posées par le script et il s'occupera du reste.
 
 ```bash
-curl -O https://temporary-under-maintenance.unavailable/wireguard-install.sh
+curl -O https://raw.githubusercontent.com/zAlwaysTheSun/wireguard-autoinstaller-french/master/wireguard-install.sh
 chmod +x wireguard-install.sh
 ./wireguard-install.sh
 ```
