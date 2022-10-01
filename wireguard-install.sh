@@ -2,6 +2,7 @@
 
 # Secure WireGuard server installer
 # https://github.com/angristan/wireguard-install
+# translate by https://github.com/zAlwaysTheSun
 
 RED='\033[0;31m'
 ORANGE='\033[0;33m'
@@ -92,10 +93,10 @@ function installQuestions() {
 
 	# Adguard DNS by default
 	until [[ ${CLIENT_DNS_1} =~ ^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$ ]]; do
-		read -rp "Entrez un serveur DNS (optimisation) : " -e -i 94.140.14.14 CLIENT_DNS_1
+		read -rp "Entrez un serveur DNS (optimisation) : " -e -i 8.8.8.8 CLIENT_DNS_1
 	done
 	until [[ ${CLIENT_DNS_2} =~ ^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$ ]]; do
-		read -rp "Entrez un second serveur DNS (option de secours, pas obligatoire): " -e -i 94.140.15.15 CLIENT_DNS_2
+		read -rp "Entrez un second serveur DNS (option de secours, pas obligatoire): " -e -i 8.8.4.4 CLIENT_DNS_2
 		if [[ ${CLIENT_DNS_2} == "" ]]; then
 			CLIENT_DNS_2="${CLIENT_DNS_1}"
 		fi
@@ -245,7 +246,7 @@ function newClient() {
 
 		if [[ ${IPV4_EXISTS} == '1' ]]; then
 			echo ""
-			echo "A client with the specified IPv4 was already created, please choose another IPv4."
+			echo "Un client avec cette IP version 4 est déjà utilisé. Merci d'en choisir une différente."
 			echo ""
 		fi
 	done
@@ -258,7 +259,7 @@ function newClient() {
 
 		if [[ ${IPV6_EXISTS} == '1' ]]; then
 			echo ""
-			echo "A client with the specified IPv6 was already created, please choose another IPv6."
+			echo "Un client avec cette IP version 6 est déjà utilisé. Merci d'en choisir une différente."
 			echo ""
 		fi
 	done
@@ -317,12 +318,12 @@ function revokeClient() {
 	NUMBER_OF_CLIENTS=$(grep -c -E "^### Client" "/etc/wireguard/${SERVER_WG_NIC}.conf")
 	if [[ ${NUMBER_OF_CLIENTS} == '0' ]]; then
 		echo ""
-		echo "You have no existing clients!"
+		echo "Il n'y a pas de clients existants !"
 		exit 1
 	fi
 
 	echo ""
-	echo "Select the existing client you want to revoke"
+	echo "Sélectionnez le client existant que vous souhaitez révoquer"
 	grep -E "^### Client" "/etc/wireguard/${SERVER_WG_NIC}.conf" | cut -d ' ' -f 3 | nl -s ') '
 	until [[ ${CLIENT_NUMBER} -ge 1 && ${CLIENT_NUMBER} -le ${NUMBER_OF_CLIENTS} ]]; do
 		if [[ ${CLIENT_NUMBER} == '1' ]]; then
@@ -347,7 +348,7 @@ function revokeClient() {
 
 function uninstallWg() {
 	echo ""
-	read -rp "Do you really want to remove WireGuard? [y/n]: " -e -i n REMOVE
+	read -rp "Voulez-vous vraiment déinstaller WireGuard ? [y/n]: " -e -i n REMOVE
 	if [[ $REMOVE == 'y' ]]; then
 		checkOS
 
@@ -386,10 +387,10 @@ function uninstallWg() {
 		WG_RUNNING=$?
 
 		if [[ ${WG_RUNNING} -eq 0 ]]; then
-			echo "WireGuard failed to uninstall properly."
+			echo "WireGuard ne s'est pas désinstallé normalement..."
 			exit 1
 		else
-			echo "WireGuard uninstalled successfully."
+			echo "WireGuard a bien été supprimé."
 			exit 0
 		fi
 	else
@@ -399,18 +400,19 @@ function uninstallWg() {
 }
 
 function manageMenu() {
-	echo "Welcome to WireGuard-install!"
-	echo "The git repository is available at: https://github.com/angristan/wireguard-install"
+	echo "Bienvenue sur le script français d'installation de WireGuard automatique !"
+	echo "Le script a été développé originalement par : https://github.com/angristan/wireguard-install"
+	echo "Le script a été traduit et modifié par : https://github.com/zAlwaysTheSun"
 	echo ""
-	echo "It looks like WireGuard is already installed."
+	echo "Il me semble que Wireguard est déjà installé, voici donc les choses que tu peux faire :"
 	echo ""
-	echo "What do you want to do?"
-	echo "   1) Add a new user"
-	echo "   2) Revoke existing user"
-	echo "   3) Uninstall WireGuard"
-	echo "   4) Exit"
+	echo "Que veut-tu faire ?"
+	echo "   1) Ajouter un nouvel utilisateur"
+	echo "   2) Supprimer un client"
+	echo "   3) Désinstaller WireGuard"
+	echo "   4) Quitter le script"
 	until [[ ${MENU_OPTION} =~ ^[1-4]$ ]]; do
-		read -rp "Select an option [1-4]: " MENU_OPTION
+		read -rp "Sélectionner une option [1-4]: " MENU_OPTION
 	done
 	case "${MENU_OPTION}" in
 	1)
