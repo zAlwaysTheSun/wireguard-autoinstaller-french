@@ -12,6 +12,8 @@ Distributions Linux testées et disponibles à l'installation :
 - Arch Linux
 - Oracle Linux
 
+>= : supérieur ou égal à
+
 ## Utilisation
 
 Téléchargez et lancez le script. Répondez aux questions posées par le script et il s'occupera du reste.
