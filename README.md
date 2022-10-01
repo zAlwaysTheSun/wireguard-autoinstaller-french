@@ -12,7 +12,7 @@ Distributions Linux testées et disponibles à l'installation :
 - Arch Linux
 - Oracle Linux
 
-> >= : supérieur ou égal à
+- >= : supérieur ou égal à
 
 ## Utilisation
 
