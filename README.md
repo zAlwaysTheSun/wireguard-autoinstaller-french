@@ -30,8 +30,8 @@ Vous souhaitez ajouter des utilisateurs ? Relancez le script ! ;)
 
 ## Fournisseurs réseau/machine virtuelle
 
-Je recommande ces hébergeurs pour l'hébergement de machines virtuelles accompagnées d'un bon réseau :
+Je recommande cet hébergeur pour l'hébergement de machines virtuelles accompagnées d'un bon réseau :
 
-- [Pristis](https://goo.gl/Xyd1Sc): IPv4 uniquement, hébergeur avec un service client et après-vente irréprochable, VPS à seulement \3.99€/m
-- [Hetzner](https://hetzner.cloud/?ref=ywtlvZsjgeDq): Allemagne et Finland, serveurs dédiés à prix très bas !
-- [AdkyNet](https://goo.gl/qXrNLK): VPS accompagné d'un réseau 10Gbps, en France et service client assez rapide !
+- [Pristis](https://urlz.fr/jwYp): IPv4 uniquement, hébergeur avec un service client et après-vente irréprochable, VPS à seulement 3.99€/mois [Avis](https://fr.trustpilot.com/review/client.pristis.fr)
+- [BestHeberg](https://bestheberg.com/): Vous permet de choisir le meilleur hébergeur en vous basant des avis des clients !
+
