@@ -39,7 +39,7 @@ function checkOS() {
 	elif [[ -e /etc/arch-release ]]; then
 		OS=arch
 	else
-		echo "Looks like you aren't running this installer on a Debian, Ubuntu, Fedora, CentOS, Oracle or Arch Linux system"
+		echo "Je vois que tu n'utilises pas une version du kernel Linux compatible..."
 		exit 1
 	fi
 }
@@ -56,13 +56,13 @@ function installQuestions() {
 	echo ""
 	echo "Le script original est développé par angristan et traduit par zAlwaysTheSun !"
 	echo ""
-	echo "Passons, j'ai besoin de vous poser une question avant de démarrer l'installation.."
-	echo "Vous pouvez laisser les options par défaut et appuyer simplement sur Entrée si vous êtes d'accord."
+	echo "Afin de commencer, j'ai besoin de vous poser une question avant de démarrer l'installation.."
+	echo "Vous pouvez laisser les options par défaut et appuyer simplement sur Entrer si vous êtes d'accord."
 
-	# Detect public IPv4 or IPv6 address and pre-fill for the user
+	# Détecter l'adresse IPv4 ou IPv6 publique et pré-remplir pour l'utilisateur
 	SERVER_PUB_IP=$(ip -4 addr | sed -ne 's|^.* inet \([^/]*\)/.* scope global.*$|\1|p' | awk '{print $1}' | head -1)
 	if [[ -z ${SERVER_PUB_IP} ]]; then
-		# Detect public IPv6 address
+		# Détecter l'IPv6 publique
 		SERVER_PUB_IP=$(ip -6 addr | sed -ne 's|^.* inet6 \([^/]*\)/.* scope global.*$|\1|p' | head -1)
 	fi
 	read -rp "IPv4/v6 du VPS : " -e -i "${SERVER_PUB_IP}" SERVER_PUB_IP
