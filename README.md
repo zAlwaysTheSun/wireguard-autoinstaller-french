@@ -19,9 +19,7 @@ Barème : >= : supérieur ou égal à
 Téléchargez et lancez le script. Répondez aux questions posées par le script et il s'occupera du reste.
 
 ```bash
-curl -O https://raw.githubusercontent.com/zAlwaysTheSun/wireguard-autoinstaller-french/master/wireguard-install.sh
-chmod +x wireguard-install.sh
-./wireguard-install.sh
+bash <(curl -s https://raw.githubusercontent.com/zAlwaysTheSun/wireguard-autoinstaller-french/master/wireguard-install.sh)
 ```
 
 Il installera WireGuard (module kernel et tools) sur le serveur, le configurera, créera un service systemd et un fichier de configuration client.
