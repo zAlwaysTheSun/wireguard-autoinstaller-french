@@ -23,7 +23,7 @@ function checkOS() {
 		if [[ ${ID} == "debian" || ${ID} == "raspbian" ]]; then
 			if [[ ${VERSION_ID} -lt 10 ]]; then
 				echo "Votre version de Debian (${VERSION_ID}) n'est pas supportée ! Merci d'utiliser Debian 10 au minimum !"
-				exit 1
+				echo "Le script peut planter à tout moment !!"
 			fi
 			OS=debian # overwrite if raspbian
 		fi
