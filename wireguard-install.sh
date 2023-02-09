@@ -54,9 +54,9 @@ function installQuestions() {
 	echo "Bienvenue sur l'installateur de WireGuard !"
 	echo "Le lien Git est disponible à cet URL : https://github.com/zAlwaysTheSun/wireguard-autoinstaller-french"
 	echo ""
-	echo "Le script original est développé par angristan et traduit par zAlwaysTheSun !"
+	echo "Le script original a été développé par angristan, mais a été modifié et traduit par zAlwaysTheSun, pour une meilleure expérience !"
 	echo ""
-	echo "Afin de commencer, j'ai besoin de vous poser une question avant de démarrer l'installation.."
+	echo "Afin de commencer, j'ai besoin de vous poser une question avant de démarrer l'installation."
 	echo "Vous pouvez laisser les options par défaut et appuyer simplement sur Entrer si vous êtes d'accord."
 
 	# Détecter l'adresse IPv4 ou IPv6 publique et pré-remplir pour l'utilisateur
